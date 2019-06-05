@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"time"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -29,7 +30,9 @@ type Notice struct {
 }
 
 // Handler is our lambda handler invoked by the `lambda.Start` function call
-func Handler(ctx context.Context) (Response, error) {
+func Handler(ctx context.Context, request events.APIGatewayProxyRequest) (Response, error) {
+	fmt.Println(request.QueryStringParameters)
+
 	db := dynamo.New(session.New(), &aws.Config{Region: aws.String("ap-northeast-1")})
 	table := db.Table("usn")
 
