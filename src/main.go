@@ -34,7 +34,7 @@ func Handler(ctx context.Context) (Response, error) {
 	table := db.Table("usn")
 
 	var notices []Notice
-	err := table.Scan().All(&notices)
+	err := table.Scan().Filter("begins_with($, ?)", "Published", "2019-05").All(&notices)
 	if err != nil {
 		return Response{StatusCode: 500}, err
 	}
