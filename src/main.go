@@ -35,6 +35,9 @@ func Handler(ctx context.Context) (Response, error) {
 
 	var notices []Notice
 	err := table.Scan().All(&notices)
+	if err != nil {
+		return Response{StatusCode: 500}, err
+	}
 
 	var buf bytes.Buffer
 
