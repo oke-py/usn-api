@@ -36,6 +36,10 @@ provider:
         - "logs:CreateLogStream"
         - "logs:PutLogEvents"
       Resource: "arn:aws:logs:*:*:*"
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:GetItem"
+      Resource: "arn:aws:dynamodb:ap-northeast-1:313471890455:table/*"
 
 # you can define service wide environment variables here
 #  environment:
