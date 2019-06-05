@@ -32,8 +32,8 @@ func Handler(ctx context.Context) (Response, error) {
 		IsBase64Encoded: false,
 		Body:            buf.String(),
 		Headers: map[string]string{
-			"Content-Type":           "application/json",
-			"X-MyCompany-Func-Reply": "hello-handler",
+			"Content-Type":                "application/json",
+			"Access-Control-Allow-Origin": "https://oke-py.github.io",
 		},
 	}
 
