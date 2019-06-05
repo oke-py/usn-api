@@ -19,6 +19,7 @@ import (
 // https://serverless.com/framework/docs/providers/aws/events/apigateway/#lambda-proxy-integration
 type Response events.APIGatewayProxyResponse
 
+// Notice is an ubuntu security notice.
 type Notice struct {
 	ID        string `dynamo:"usn_id"`
 	Pkg       string `dynamo:"name"`
@@ -29,12 +30,14 @@ type Notice struct {
 }
 
 // Handler is our lambda handler invoked by the `lambda.Start` function call
-func Handler(ctx context.Context) (Response, error) {
+func Handler(ctx context.Context, request events.APIGatewayProxyRequest) (Response, error) {
+	q := request.QueryStringParameters
+
 	db := dynamo.New(session.New(), &aws.Config{Region: aws.String("ap-northeast-1")})
 	table := db.Table("usn")
 
 	var notices []Notice
-	err := table.Scan().Filter("begins_with($, ?)", "published", "2019-05").All(&notices)
+	err := table.Scan().Filter("begins_with($, ?)", "published", q["m"]).All(&notices)
 	if err != nil {
 		return Response{StatusCode: 500}, err
 	}
