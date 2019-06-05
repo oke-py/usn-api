@@ -1,0 +1,23 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:latest
+    steps:
+      - checkout
+      - run:
+          name: install node.js
+          command: |
+            curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+      - run:
+          name: install serverless
+          command: 'sudo npm install -g serverless'
+      - deploy:
+          name: deploy
+          command: |
+              if [ "${CIRCLE_BRANCH}" == "master" ]; then
+                make deployprod
+              else
+                make deploy
+              fi
