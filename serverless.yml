@@ -25,24 +25,21 @@ provider:
   runtime: go1.x
 
 # you can overwrite defaults here
-#  stage: dev
-#  region: us-east-1
+  stage: ${opt.stage, dev}
+  region: ap-northeast-1
 
 # you can add statements to the Lambda function's IAM Role here
-#  iamRoleStatements:
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:ListBucket"
-#      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:PutObject"
-#      Resource:
-#        Fn::Join:
-#          - ""
-#          - - "arn:aws:s3:::"
-#            - "Ref" : "ServerlessDeploymentBucket"
-#            - "/*"
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "logs:CreateLogGroup"
+        - "logs:CreateLogStream"
+        - "logs:PutLogEvents"
+      Resource: "arn:aws:logs:*:*:*"
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:GetItem"
+      Resource: "arn:aws:dynamodb:ap-northeast-1:313471890455:table/*"
 
 # you can define service wide environment variables here
 #  environment:
@@ -55,18 +52,13 @@ package:
    - ./bin/**
 
 functions:
-  hello:
-    handler: bin/hello
+  usn-api:
+    handler: bin/usn-api
     events:
       - http:
-          path: hello
+          path: /
           method: get
-  world:
-    handler: bin/world
-    events:
-      - http:
-          path: world
-          method: get
+          cors: true
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
