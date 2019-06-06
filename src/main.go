@@ -21,12 +21,14 @@ type Response events.APIGatewayProxyResponse
 
 // Notice is an ubuntu security notice.
 type Notice struct {
-	ID        string `dynamo:"usn_id"`
-	Pkg       string `dynamo:"name"`
-	CVEs      []string
-	Priority  string    `dynamo:"severity"`
-	Published time.Time `dynamo:"published"`
-	Updated   time.Time `dynamo:"updated"`
+	ID          string `dynamo:"usn_id"`
+	Pkg         string `dynamo:"name"`
+	CVEs        []string
+	Priority    string    `dynamo:"severity"`
+	Affects1604 bool      `dynamo:"affects_1604"`
+	Affects1804 bool      `dynamo:"affects_1804"`
+	Published   time.Time `dynamo:"published"`
+	Updated     time.Time `dynamo:"updated"`
 }
 
 // Handler is our lambda handler invoked by the `lambda.Start` function call
