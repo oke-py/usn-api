@@ -43,7 +43,12 @@ provider:
 
 # you can define service wide environment variables here
   environment:
-    table: ${opt.table, "usn-dev"}
+    table: ${self.custom.table.${self.provider.stage}}
+
+custom:
+  table:
+    dev: "usn-dev"
+    prod: "usn"
 
 package:
  exclude:
