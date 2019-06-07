@@ -8,10 +8,10 @@ clean:
 	rm -rf ./bin ./vendor Gopkg.lock
 
 deploy: clean build
-	sls deploy --verbose
+	sls deploy --stage dev --table usn-dev --verbose
 
 deployprod: clean build
-	sls deploy --stage prod --verbose
+	sls deploy --stage prod --table usn --verbose
 
 gomodgen:
 	chmod u+x gomod.sh

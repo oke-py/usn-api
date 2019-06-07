@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"os"
 	"time"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -36,7 +37,7 @@ func Handler(ctx context.Context, request events.APIGatewayProxyRequest) (Respon
 	q := request.QueryStringParameters
 
 	db := dynamo.New(session.New(), &aws.Config{Region: aws.String("ap-northeast-1")})
-	table := db.Table("usn")
+	table := db.Table(os.Getenv("table"))
 
 	var notices []Notice
 	err := table.Scan().Filter("begins_with($, ?)", "published", q["m"]).All(&notices)
