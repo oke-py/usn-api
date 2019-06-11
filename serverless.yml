@@ -39,7 +39,7 @@ provider:
     - Effect: "Allow"
       Action:
         - "dynamodb:Scan"
-      Resources:
+      Resource:
         - 'Fn::Join':
           - ':'
           -
