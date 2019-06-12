@@ -37,7 +37,7 @@ provider:
         - "logs:CreateLogStream"
         - "logs:PutLogEvents"
       Resource:
-        - 'Fn::Join':
+        Fn::Join:
           - ':'
           -
             - 'arn:aws:logs'
@@ -48,7 +48,7 @@ provider:
       Action:
         - "dynamodb:Scan"
       Resource:
-        - 'Fn::Join':
+        Fn::Join:
           - ':'
           -
             - 'arn:aws:dynamodb'
