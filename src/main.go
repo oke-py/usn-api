@@ -36,11 +36,15 @@ type Notice struct {
 func Handler(ctx context.Context, request events.APIGatewayProxyRequest) (Response, error) {
 	q := request.QueryStringParameters
 
-	db := dynamo.New(session.New(), &aws.Config{Region: aws.String("ap-northeast-1")})
+	sess, err := session.NewSession()
+	if err != nil {
+		return Response{StatusCode: 500}, err
+	}
+	db := dynamo.New(sess, &aws.Config{Region: aws.String("ap-northeast-1")})
 	table := db.Table(os.Getenv("table"))
 
 	var notices []Notice
-	err := table.Scan().Filter("begins_with($, ?)", "published", q["m"]).All(&notices)
+	err = table.Scan().Filter("begins_with($, ?)", "published", q["m"]).All(&notices)
 	if err != nil {
 		return Response{StatusCode: 500}, err
 	}

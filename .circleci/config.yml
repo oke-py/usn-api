@@ -1,6 +1,4 @@
 version: 2.1
-orbs:
-  aws-cli: circleci/aws-cli@0.1.18
 
 jobs:
   deploy:
@@ -8,11 +6,16 @@ jobs:
       - image: circleci/golang:latest
     steps:
       - checkout
-      - aws-cli/setup
+      - run:
+          name: install lint tool
+          command: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.21.0
+      - run:
+          name: golangci-lint
+          command: make lint
       - run:
           name: install node.js
           command: |
-            curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
             sudo apt-get install -y nodejs
       - run:
           name: install serverless

@@ -1,6 +1,8 @@
-.PHONY: build clean deploy gomodgen
+.PHONY: build clean deploy
 
-build: gomodgen
+all: build fix vet fmt lint tidy
+
+build:
 	export GO111MODULE=on
 	env GOOS=linux go build -ldflags="-s -w" -o bin/usn-api src/main.go
 
@@ -13,6 +15,17 @@ deploy: clean build
 deployprod: clean build
 	sls deploy --stage prod --verbose
 
-gomodgen:
-	chmod u+x gomod.sh
-	./gomod.sh
+fix:
+	go fix ./...
+
+fmt:
+	go fmt ./...
+
+lint:
+	golangci-lint run ./...
+
+tidy:
+	go mod tidy
+
+vet:
+	go vet ./...
