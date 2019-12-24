@@ -7,11 +7,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: install lint tool
-          command: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.21.0
-      - run:
           name: golangci-lint
           command: make lint
+      - run:
+          name: gosec
+          command: make sec
       - run:
           name: install node.js
           command: |
