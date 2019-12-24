@@ -1,6 +1,8 @@
 .PHONY: build clean deploy
 
-all: build fix vet fmt lint tidy
+GOBIN := $(shell go env GOPATH)/bin
+
+all: build fix vet fmt lint sec tidy
 
 build:
 	export GO111MODULE=on
@@ -22,7 +24,12 @@ fmt:
 	go fmt ./...
 
 lint:
-	golangci-lint run ./...
+	(which $(GOBIN)/golangci-lint || go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.21.0)
+	$(GOBIN)/golangci-lint run ./...
+
+sec:
+	(which $(GOBIN)/gosec || go get github.com/securego/gosec/cmd/gosec)
+	$(GOBIN)/gosec ./...
 
 tidy:
 	go mod tidy
